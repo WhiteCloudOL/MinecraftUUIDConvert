@@ -159,6 +159,7 @@ def ConvertUUID(firstDict: Dict[str, str], secondDict: Dict[str, str],
 
 
 if __name__ == '__main__':
+    Path("./logs").mkdir(exist_ok=True)
     Path("./input").mkdir(exist_ok=True)
     print("Minecraft UUID Convert v0.1\n"
           " By WhiteCloudCN\n"
@@ -177,7 +178,8 @@ if __name__ == '__main__':
     choice = input("输入 Y/y 执行转换:")
     if choice.upper() == "Y":
         try:
-            message = "😠 解析待转换的usernamecache1.json中..."
+            message = ("\n===========================\n"
+                       "\n😠 解析待转换的usernamecache1.json中...")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
             firstDict = ParseUUID("usernamecache1.json", keep_first=True)
             message = "😠 usernamecache1.json解析完成！\n"
@@ -185,7 +187,8 @@ if __name__ == '__main__':
             message = "😠 解析待转换的usernamecache2.json中..."
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
             secondDict = ParseUUID("usernamecache2.json", keep_first=False)
-            message = "😠 usernamecache2.json解析完成！\n"
+            message = ("😠 usernamecache2.json解析完成！\n"
+                       "===========================\n")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
 
             start_msg = "=== 转换开始 ==="
