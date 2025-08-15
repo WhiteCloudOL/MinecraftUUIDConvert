@@ -3,7 +3,7 @@
 Convert uuid through parsing usernamecache.json &amp; copying files.  
 
 ##  ❤️ 要求 / Requirements  
-Python 3.12.x  
+Python 3.12.x 及以上
 
 ## 🌍 环境 / Environments  
 开发环境：Windows 11 24H2 26100.1949 
@@ -12,7 +12,7 @@ It theoretically supports for all the modern Microsoft Windows Operating System.
 It haven't been tested on any linux system.If you have a need, you can test or modify it yourself.  
 
 ## 🤞 使用方式 / Usage  
-1. 下载Python3.12并安装（勾选添加到path）  
+1. 下载Python3.12及以上版本并安装（勾选添加到path）  
 2. 下载本工具（通过main分支或release均可）  
 3. 放入任何你想要转换的数据（例如world/playerdata，world/ftbquests等）
 4. 复制前后的usernamecache.json到usernamecache1.json与usernamecache2.json
