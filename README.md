@@ -20,7 +20,7 @@ It haven't been tested on any linux system.If you have a need, you can test or m
   (tip: 如果你的usernamecache未重置过，可以将该usernamecache复制为两份，软件将会自动识别前后usernamecache，默认第一个出现的UUID为待转换，最后一个出现的为需要转换成的UUID)
 5. 双击运行main.py
 6. 查看导出文件(output/)
-   (tip: deleted/:归档的文件（存档中新生成的数据文件，默认删除，可按需保存回），unconverted/:未转换的文件，未找到UUID，无法转换)
+   (tip: deleted/:归档的文件（存档中新生成的数据文件，默认删除，可按需保存回），unconverted/:未转换的文件，未找到UUID，无法转换)  
 **注意：在转换前请确保所有玩家均已重进一次生成新的UUID**  
 ![Image](https://youke1.picui.cn/s1/2025/08/15/689eeec30701f.png)
 
