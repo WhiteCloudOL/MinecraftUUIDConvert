@@ -210,7 +210,7 @@ if __name__ == '__main__':
           " By WhiteCloudCN\n"
           "✨ 功能：\n"
           "转换存档玩家文件，支持任意以uuid命名的数据文件\n"
-          "要求有前后usernamecache/usercache（玩家必须进入一次）文件"
+          "要求有前后usernamecache/usercache（玩家必须进入一次）文件\n"
           "在大量数据下很方便！！！\n"
           "\n"
           "✨ 用法：\n"
@@ -286,3 +286,4 @@ if __name__ == '__main__':
     else:
         input("按下任意键关闭...")
         exit()
+
