@@ -1,8 +1,8 @@
 """
 AppName: Minecraft UUID Convert
 Author: WhiteCloudCN
-Update Time: 2025/08/15 14:50
-Version: 0.1
+Update Time: 2025/08/15 18:20
+Version: 0.2
 """
 from datetime import datetime
 import json
@@ -17,7 +17,7 @@ def log_to_both(file, message):
     file.write(message + "\n")
 
 
-def ParseUUID(file_path: str, keep_first: bool = True) -> Dict[str, str]:
+def ParseNamecache(file_path: str, keep_first: bool = True) -> Dict[str, str]:
     Path("./logs").mkdir(exist_ok=True)
     with open(file_path, 'r', encoding='utf-8') as file:
         original_data = json.load(file)
@@ -52,6 +52,51 @@ def ParseUUID(file_path: str, keep_first: bool = True) -> Dict[str, str]:
     return result
 
 
+
+import json
+
+
+def ParseUsercache(file_path: str, keep_first: bool = True) -> Dict[str, str]:
+    Path("./logs").mkdir(exist_ok=True)
+
+    with open(file_path, 'r', encoding='utf-8') as file:
+        user_data = json.load(file)
+
+    name_to_uuids = {}
+    for user in user_data:
+        name = user['name']
+        uuid = user['uuid']
+        if name not in name_to_uuids:
+            name_to_uuids[name] = []
+        name_to_uuids[name].append(uuid)
+
+    duplicates = {name: uuids for name, uuids in name_to_uuids.items() if len(uuids) > 1}
+    if duplicates:
+        with open("logs/users.log", "a", encoding="utf-8") as user_log:
+            header = f"\n⚠️ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} 发现重复用户名:"
+            log_to_both(user_log, header)
+            for name, uuids in duplicates.items():
+                msg = f"  用户名 '{name}' 对应 {len(uuids)} 个UUID:"
+                log_to_both(user_log, msg)
+                for i, uuid in enumerate(uuids, 1):
+                    msg = f"    {i}. {uuid}"
+                    log_to_both(user_log, msg)
+            choice = "\n将保留每个用户名对应的" + ("第一个" if keep_first else "最后一个") + "UUID"
+            log_to_both(user_log, choice)
+
+    # 构建最终结果
+    result = {}
+    for user in user_data:
+        name = user['name']
+        uuid = user['uuid']
+        if name not in result:
+            result[name] = uuid
+        elif not keep_first:
+            result[name] = uuid
+
+    return result
+
+
 def ConvertUUID(firstDict: Dict[str, str], secondDict: Dict[str, str],
                input_dir='./input',
                output_dir='./output',
@@ -63,7 +108,7 @@ def ConvertUUID(firstDict: Dict[str, str], secondDict: Dict[str, str],
     Path(unconverted_dir).mkdir(exist_ok=True)
 
     # 清空输出文件夹
-    for folder in [output_dir, deleted_dir, unconverted_dir]:
+    for folder in [output_dir, deleted_dir, unconverted_dir,"./logs"]:
         for item in Path(folder).glob('*'):
             item.unlink() if item.is_file() else shutil.rmtree(item)
         readme_path = Path(folder) / "README.txt"
@@ -147,7 +192,7 @@ def ConvertUUID(firstDict: Dict[str, str], secondDict: Dict[str, str],
             if input_file.is_file() and input_file not in processed_files:
                 shutil.copy2(input_file, Path(unconverted_dir) / input_file.name)
                 count_file[2] += 1
-                msg = f"⚠️ 未转换: {input_file} -> {unconverted_dir}/{input_file.name}\n"
+                msg = f"⚠️ 未转换: {input_file} -> {unconverted_dir}/{input_file.name}"
                 log_to_both(unconv_log, msg)
 
         summary = (f"\n🔄 已转换{count_file[0]}个文件\n"
@@ -161,32 +206,32 @@ def ConvertUUID(firstDict: Dict[str, str], secondDict: Dict[str, str],
 if __name__ == '__main__':
     Path("./logs").mkdir(exist_ok=True)
     Path("./input").mkdir(exist_ok=True)
-    print("Minecraft UUID Convert v0.1\n"
+    print("Minecraft UUID Convert v0.2\n"
           " By WhiteCloudCN\n"
           "✨ 功能：\n"
           "转换存档玩家文件，支持任意以uuid命名的数据文件\n"
-          "要求有前后usernamecache（玩家必须进入一次）文件"
+          "要求有前后usernamecache/usercache（玩家必须进入一次）文件"
           "在大量数据下很方便！！！\n"
           "\n"
           "✨ 用法：\n"
           "1.将待转换的playerdata文件放置于 input/ 文件夹内\n"
-          "2.将旧 usernamecache.json 重命名为 usernamecache1.json 放置于根目录\n"
-          "3.将新 usernamecache.json 重命名为 usernamecache2.json 放置于根目录\n"
+          "2.将旧 usernamecache/usercache.json 重命名为 usernamecache1/usercache1.json 放置于根目录\n"
+          "3.将新 usernamecache/usercache.json 重命名为 usernamecache2/usercache2.json 放置于根目录\n"
           "Tip: \n"
-          "如果你前后并没有重置 usernamecache.json ,那么直接将 usernamecache.json 复制成两份或许也是可行的！\n"
-          "不过最好建议自行筛选一下 usernamecache.json 避免干扰\n")
-    choice = input("输入 Y/y 执行转换:")
-    if choice.upper() == "Y":
+          "如果你前后并没有重置 usernamecache/usercache.json ,那么直接将 usernamecache/usercache.json 复制成两份或许也是可行的！\n"
+          "不过最好建议自行筛选一下 usernamecache/usercache.json 避免干扰\n")
+    choice = input("请选择解析方式（1:usernamecache，2:usercache）:")
+    if choice == "1":
         try:
             message = ("\n===========================\n"
                        "\n😠 解析待转换的usernamecache1.json中...")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
-            firstDict = ParseUUID("usernamecache1.json", keep_first=True)
+            firstDict = ParseNamecache("usernamecache1.json", keep_first=True)
             message = "😠 usernamecache1.json解析完成！\n"
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
             message = "😠 解析待转换的usernamecache2.json中..."
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
-            secondDict = ParseUUID("usernamecache2.json", keep_first=False)
+            secondDict = ParseNamecache("usernamecache2.json", keep_first=False)
             message = ("😠 usernamecache2.json解析完成！\n"
                        "===========================\n")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
@@ -203,6 +248,37 @@ if __name__ == '__main__':
                         "请确保准备好以下文件:\n"
                         "1. usernamecache1.json - 包含旧UUID映射\n"
                         "2. usernamecache2.json - 包含新UUID映射\n"
+                        "3. input/ - 包含需要转换的文件")
+            print(error_msg)
+            input("按下任意键关闭...")
+            exit()
+    elif choice == "2":
+        try:
+            message = ("\n===========================\n"
+                       "\n😠 解析待转换的usercache1.json中...")
+            log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
+            firstDict = ParseUsercache("usercache1.json", keep_first=True)
+            message = "😠 usercache1.json解析完成！\n"
+            log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
+            message = "😠 解析待转换的usercache2.json中..."
+            log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
+            secondDict = ParseUsercache("usercache2.json", keep_first=False)
+            message = ("😠 usercache2.json解析完成！\n"
+                       "===========================\n")
+            log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
+
+            start_msg = "=== 转换开始 ==="
+            print(start_msg)
+            ConvertUUID(firstDict, secondDict)
+            end_msg = "=== 转换完成 ==="
+            print(end_msg)
+            input("按下任意键关闭...")
+            exit()
+        except FileNotFoundError as e:
+            error_msg = (f"❌ 错误: {e}\n"
+                        "请确保准备好以下文件:\n"
+                        "1. usercache1.json - 包含旧UUID映射\n"
+                        "2. usercache2.json - 包含新UUID映射\n"
                         "3. input/ - 包含需要转换的文件")
             print(error_msg)
             input("按下任意键关闭...")
