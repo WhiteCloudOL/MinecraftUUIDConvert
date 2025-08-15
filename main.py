@@ -257,12 +257,12 @@ if __name__ == '__main__':
             message = ("\n===========================\n"
                        "\n😠 解析待转换的usercache1.json中...")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
-            firstDict = ParseUsercache("usercache1.json", keep_first=True)
+            firstDict = ParseUsercache("usercache1.json", keep_first=False)
             message = "😠 usercache1.json解析完成！\n"
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
             message = "😠 解析待转换的usercache2.json中..."
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
-            secondDict = ParseUsercache("usercache2.json", keep_first=False)
+            secondDict = ParseUsercache("usercache2.json", keep_first=True)
             message = ("😠 usercache2.json解析完成！\n"
                        "===========================\n")
             log_to_both(open("logs/users.log", 'a', encoding='utf-8'), message)
@@ -286,4 +286,3 @@ if __name__ == '__main__':
     else:
         input("按下任意键关闭...")
         exit()
-
