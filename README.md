@@ -23,3 +23,7 @@ It haven't been tested on any linux system.If you have a need, you can test or m
    (tip: deleted/:归档的文件（存档中新生成的数据文件，默认删除，可按需保存回），unconverted/:未转换的文件，未找到UUID，无法转换)
 **注意：在转换前请确保所有玩家均已重进一次生成新的UUID**  
 ![Image](https://youke1.picui.cn/s1/2025/08/15/689eeec30701f.png)
+
+## 🐸 计划支持 / Plan to Support  
+✅ usercache解析 
+☐ 单人存档level.dat 导出/修改
