@@ -1,6 +1,7 @@
 # ✨ MCUUID转换器 / MinecraftUUIDConvert  
 通过解析usernamecache.json转换数据文件，支持几乎所有以UUID命名的数据文件！  
 Convert uuid through parsing usernamecache.json / usercache.json &amp; copying files.  
+由于数据格式不同，暂未完成对FTB系列的支持
 
 ##  ❤️ 要求 / Requirements  
 Python 3.12.x 及以上
