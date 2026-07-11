@@ -16,7 +16,12 @@ from minecraft_uuid_convert.services import (
     MinecraftProfileClient,
     ProfileLookupError,
 )
-from minecraft_uuid_convert.uuid_tools import find_uuids, normalize_uuid, offline_uuid
+from minecraft_uuid_convert.uuid_tools import (
+    find_uuids,
+    normalize_uuid,
+    offline_uuid,
+    replace_uuid_forms,
+)
 
 TEXT_SUFFIXES = {
     ".cfg",
@@ -274,13 +279,7 @@ def _collect_candidates(files: Iterable[Path], *, replace_text: bool) -> set[str
 
 
 def _replace_path_uuids(path: Path, mapping: dict[str, str]) -> Path:
-    parts: list[str] = []
-    for part in path.parts:
-        updated = part
-        for source_uuid, target_uuid in mapping.items():
-            updated = updated.replace(source_uuid, target_uuid)
-        parts.append(updated)
-    return Path(*parts)
+    return Path(*(replace_uuid_forms(part, mapping) for part in path.parts))
 
 
 def _copy_with_replacements(
@@ -292,15 +291,18 @@ def _copy_with_replacements(
 ) -> bool:
     if replace_text and source.suffix.lower() in TEXT_SUFFIXES:
         try:
-            content = source.read_text(encoding="utf-8-sig")
+            raw_content = source.read_bytes()
+            has_utf8_bom = raw_content.startswith(b"\xef\xbb\xbf")
+            content = raw_content.decode("utf-8-sig")
         except UnicodeDecodeError:
             shutil.copy2(source, target)
             return False
-        updated = content
-        for source_uuid, target_uuid in mapping.items():
-            updated = updated.replace(source_uuid, target_uuid)
+        updated = replace_uuid_forms(content, mapping)
         if updated != content:
-            target.write_text(updated, encoding="utf-8", newline="")
+            encoded = updated.encode("utf-8")
+            if has_utf8_bom:
+                encoded = b"\xef\xbb\xbf" + encoded
+            target.write_bytes(encoded)
             shutil.copystat(source, target)
             return True
     shutil.copy2(source, target)

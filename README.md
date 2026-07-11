@@ -66,6 +66,7 @@ UUID v3/v4 用于筛选转换方向，但版本号本身不是“玩家身份”
 - 递归保留原始目录结构，生成完整输出镜像。
 - 转换 UUID 文件名，包括二进制 `playerdata/*.dat`。
 - 在 JSON、SNBT、TOML、YAML、配置和文本文件中替换**已确认玩家**的 UUID 引用。
+- 兼容 FTB Essentials、FTB Quests 与 FTB Teams 的玩家 SNBT，包括紧凑 UUID 和 `名称#UUID前缀`。
 - 自动识别原版 `usercache.json` 数组格式和模组常见的 `usernamecache.json` 对象格式。
 - 正版转离线、离线转正版双向迁移。
 - 后台执行在线查询，GUI 不会在网络访问时冻结。
@@ -137,6 +138,7 @@ uv run minecraft-uuid-convert D:\Server\world\playerdata `
 
 - 二进制 `.dat` / NBT 文件会按原字节复制；若文件名是已确认玩家 UUID，则只改名。
 - 文本内容替换仅覆盖 `.json`、`.snbt`、`.toml`、`.yaml`、`.cfg`、`.conf`、`.properties`、`.txt` 等已知文本扩展名。
+- FTB Quests 的 32 位紧凑 UUID、FTB Teams 的 UUID 键和值，以及 FTB Essentials 的玩家文件名会同步迁移。
 - 不是所选方向源版本的 UUID、无法关联玩家名的离线 UUID、官方服务无法确认的 UUID 均保持不变。
 - 输出目录不得与输入目录相同，也不得位于输入目录内部，以避免递归复制。
 - 输出中出现同名目标时，后处理项使用 `.uuid-conflict-N` 后缀并记录冲突；每个输入文件仍会得到一个输出副本。
