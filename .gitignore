@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Runtime data and generated results
+input/
+output/
+logs/
+deleted/
+unconverted/
+/tests/
+
+# Local cache files may contain player information
+usercache*.json
+usernamecache*.json

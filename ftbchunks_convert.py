@@ -1,4 +1,4 @@
-"""Compatibility launcher for Minecraft UUID Convert."""
+"""Legacy launcher retained for existing FTB Chunks workflows."""
 
 from minecraft_uuid_convert.__main__ import main
 
