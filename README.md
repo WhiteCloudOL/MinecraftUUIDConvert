@@ -150,7 +150,7 @@ uv run ruff check .
 uv run pytest
 ```
 
-项目使用 `src/` 布局，转换核心与 GUI 分离。`main.py` 和 `ftbchunks_convert.py` 作为旧工作流兼容入口保留；在完成 `uv sync` 后可通过 `uv run python main.py` 启动。
+项目使用 `src/` 布局，转换核心与 GUI 分离。`main.py` 作为旧工作流兼容入口保留；在完成 `uv sync` 后可通过 `uv run python main.py` 启动。
 
 ## 许可证
 
