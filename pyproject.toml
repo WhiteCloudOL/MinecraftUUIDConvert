@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "minecraft-uuid-convert"
-version = "0.1.1"
+version = "0.1.2"
 description = "Minecraft Java Edition online/offline UUID migration tool"
 readme = "README.md"
 requires-python = ">=3.11"
