@@ -10,7 +10,6 @@
     <img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-4E8197.svg">
     <img alt="Package manager: uv" src="https://img.shields.io/badge/环境-uv-5E7E55.svg">
     <img alt="GUI: Tkinter" src="https://img.shields.io/badge/GUI-Tkinter-22333B.svg">
-    <img alt="Platform: Windows" src="https://img.shields.io/badge/平台-Windows-4E8197.svg">
   </p>
 
   <p>完整世界镜像 · 单缓存双向解析 · 二进制零改写 · 冲突零丢失 · 独立运行日志</p>
